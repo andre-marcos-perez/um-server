@@ -3,7 +3,7 @@ package sequence
 import "errors"
 
 var (
-	ErrEmpty = errors.New("empty")
+	ErrLinkedListEmpty = errors.New("empty")
 )
 
 // LinkedList implements an unsorted double-linked list
@@ -41,7 +41,21 @@ func (l *LinkedList[T]) Insert(v T) {
 // Peek peeks head
 func (l *LinkedList[T]) Peek() (*T, error) {
 	if l.head == nil {
-		return nil, ErrEmpty
+		return nil, ErrLinkedListEmpty
 	}
 	return &l.head.v, nil
+}
+
+// Delete deletes the head
+func (l *LinkedList[T]) Delete() (*T, error) {
+	if l.head == nil {
+		return nil, ErrLinkedListEmpty
+	}
+	node := l.head
+	l.head = node.next
+	if l.head != nil {
+		l.head.prev = nil
+	}
+	l.size -= 1
+	return &node.v, nil
 }

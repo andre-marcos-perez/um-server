@@ -48,3 +48,28 @@ func TestLinkedListPeek(t *testing.T) {
 	}
 
 }
+
+func TestLinkedListDelete(t *testing.T) {
+	list := NewLinkedList[int]()
+	list.Insert(1)
+	list.Insert(2)
+
+	expected := 2
+	if got, _ := list.Delete(); *got != expected {
+		t.Errorf("NewLinkedList[int]: expected %v, got %v", expected, got)
+	}
+
+	expected = 1
+	if got, _ := list.Peek(); *got != expected {
+		t.Errorf("NewLinkedList[int]: expected %v, got %v", expected, got)
+	}
+
+	expected = 1
+	if got, _ := list.Delete(); *got != expected {
+		t.Errorf("NewLinkedList[int]: expected %v, got %v", expected, got)
+	}
+
+	if _, err := list.Delete(); err == nil {
+		t.Errorf("NewLinkedList[int]: expected error, got nil")
+	}
+}
