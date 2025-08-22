@@ -14,6 +14,10 @@ lint:
 test:
 	@go test ./...
 
+.PHONY: build
+build:
+	@go build -v ./main.go
+
 .PHONY: run
 run:
-	@go run -v main.go
+	@go run -v ./main.go
