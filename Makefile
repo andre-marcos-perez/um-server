@@ -10,6 +10,10 @@ format:
 lint:
 	@golangci-lint run
 
+.PHONY: test
+test:
+	@go test ./...
+
 .PHONY: run
 run:
 	@go run -v main.go
