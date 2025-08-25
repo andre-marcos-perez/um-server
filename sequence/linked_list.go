@@ -42,6 +42,7 @@ func (list *LinkedList[T]) Peek() (*T, error) {
 }
 
 // Sort randomly sorts the elements in place using Knuth shuffle algorithm
+// Ref.: https://en.wikipedia.org/wiki/Fisher–Yates_shuffle
 func (list *LinkedList[T]) Sort() {
 	n := list.size
 	nodes := make([]*Node[T], 0, n)

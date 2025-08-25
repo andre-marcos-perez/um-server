@@ -37,6 +37,10 @@ func WithShuffle() func(*Deck) {
 	}
 }
 
+func (deck *Deck) Len() int {
+	return deck.cards.Len()
+}
+
 func (deck *Deck) Draw() (*Card, error) {
 	card, err := deck.cards.Delete()
 	if errors.Is(err, sequence.ErrSequenceEmpty) {
