@@ -1,20 +1,42 @@
 package core
 
+import "fmt"
+
+const (
+	GameInitPlayerDeckSize  int = 7
+	GameInitPlayerMinAmount int = 2
+	GameInitPlayerMaxAmount int = 10
+	GameInitDrawDeckSize    int = 112
+)
+
 type Game struct {
-	DrawPile    *Deck
-	DiscardPile *Deck
+	DrawDeck    *Deck
+	DiscardDeck *Deck
 }
 
-func NewGame() *Game {
-	return &Game{
-		DrawPile:    initDrawPile(),
-		DiscardPile: initDiscardPile(),
+func NewGame(players []Player) *Game {
+	game := &Game{
+		DrawDeck:    initDrawDeck(),
+		DiscardDeck: initDiscardDeck(),
 	}
+	if len(players) < GameInitPlayerMinAmount || len(players) > GameInitPlayerMaxAmount {
+		panic(fmt.Sprintf("game must between %v and %v players", GameInitPlayerMinAmount, GameInitPlayerMaxAmount))
+	}
+	for _, player := range players {
+		for i := 0; i < GameInitPlayerDeckSize; i += 1 {
+			card, err := game.DrawDeck.Draw()
+			if err != nil {
+				panic(err)
+			}
+			player.deck.Place(*card)
+		}
+	}
+	return game
 }
 
-func initDrawPile() *Deck {
+func initDrawDeck() *Deck {
 	i := 0
-	cards := make([]Card, 0, 112)
+	cards := make([]Card, 0, GameInitDrawDeckSize)
 	suits := []CardSuit{Red, Green, Blue, Yellow}
 	ranks := []CardRank{Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Reverse, Skip, PlusTwo}
 	for _, suit := range suits {
@@ -39,6 +61,6 @@ func initDrawPile() *Deck {
 	)
 }
 
-func initDiscardPile() *Deck {
+func initDiscardDeck() *Deck {
 	return NewDeck()
 }
