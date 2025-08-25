@@ -48,3 +48,7 @@ func (deck *Deck) Draw() (*Card, error) {
 	}
 	return card, err
 }
+
+func (deck *Deck) Place(card Card) {
+	deck.cards.Insert(card)
+}

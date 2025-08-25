@@ -2,19 +2,20 @@ package core
 
 import "fmt"
 
-type cardSuit uint8
+type CardSuit uint8
 
 const (
-	Red cardSuit = iota
+	Red CardSuit = iota
 	Blue
 	Green
 	Yellow
+	Wild
 )
 
-type cardRank uint8
+type CardRank uint8
 
 const (
-	Zero cardRank = iota
+	Zero CardRank = iota
 	One
 	Two
 	Three
@@ -26,21 +27,21 @@ const (
 	Nine
 	Reverse
 	Skip
-	Wild
+	Any
 	PlusTwo
 	PlusFour
 )
 
 type Card struct {
-	suit cardSuit
-	rank cardRank
+	suit CardSuit
+	rank CardRank
 }
 
 func (c Card) String() string {
 	return fmt.Sprintf("%v of %v", c.suit, c.rank)
 }
 
-func NewCard(suit cardSuit, rank cardRank) *Card {
+func NewCard(suit CardSuit, rank CardRank) *Card {
 	return &Card{
 		suit: suit,
 		rank: rank,
