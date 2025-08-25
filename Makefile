@@ -14,6 +14,10 @@ lint:
 test:
 	@go test ./...
 
+.PHONY: generate
+gen:
+	go generate ./...
+
 .PHONY: build
 build:
 	@go build -v ./main.go
