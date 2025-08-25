@@ -1,6 +1,8 @@
 package core
 
-import "fmt"
+import (
+	"errors"
+)
 
 const (
 	GameInitPlayerDeckSize  int = 7
@@ -9,19 +11,26 @@ const (
 	GameInitDrawDeckSize    int = 112
 )
 
+var (
+	ErrGamePlayerInvalidAmount = errors.New("invalid amount of players")
+)
+
 type Game struct {
 	DrawDeck    *Deck
 	DiscardDeck *Deck
 }
 
-func NewGame(players []Player) *Game {
+func NewGame(players []Player) (*Game, error) {
+
+	if len(players) < GameInitPlayerMinAmount || len(players) > GameInitPlayerMaxAmount {
+		return nil, ErrGamePlayerInvalidAmount
+	}
+
 	game := &Game{
 		DrawDeck:    initDrawDeck(),
 		DiscardDeck: initDiscardDeck(),
 	}
-	if len(players) < GameInitPlayerMinAmount || len(players) > GameInitPlayerMaxAmount {
-		panic(fmt.Sprintf("game must between %v and %v players", GameInitPlayerMinAmount, GameInitPlayerMaxAmount))
-	}
+
 	for _, player := range players {
 		for i := 0; i < GameInitPlayerDeckSize; i += 1 {
 			card, err := game.DrawDeck.Draw()
@@ -31,12 +40,13 @@ func NewGame(players []Player) *Game {
 			player.deck.Place(*card)
 		}
 	}
-	return game
+
+	return game, nil
 }
 
 func initDrawDeck() *Deck {
 
-	cards := make([]Card, GameInitDrawDeckSize)
+	cards := make([]Card, 0)
 
 	suits := []CardSuit{Red, Green, Blue, Yellow}
 	ranks := []CardRank{Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Reverse, Skip, PlusTwo}
