@@ -1,9 +1,8 @@
 package sequence
 
-import "errors"
-
-var (
-	ErrLinkedListEmpty = errors.New("empty")
+import (
+	"math/rand"
+	"time"
 )
 
 // LinkedList implements an unsorted double-linked list
@@ -20,42 +19,68 @@ func NewLinkedList[T comparable]() *LinkedList[T] {
 	}
 }
 
-// Len returns the number of elements in the sequence
-func (l *LinkedList[T]) Len() int {
-	return l.size
+// Len returns the number of elements
+func (list *LinkedList[T]) Len() int {
+	return list.size
 }
 
-// Insert inserts to head
-func (l *LinkedList[T]) Insert(v T) {
+// Iter returns the elements in-order
+func (list *LinkedList[T]) Iter() []T {
+	elements := make([]T, 0, list.size)
+	for node := list.head; node != nil; node = node.next {
+		elements = append(elements, node.v)
+	}
+	return elements
+}
+
+// Peek peeks the element in the head
+func (list *LinkedList[T]) Peek() (*T, error) {
+	if list.head == nil {
+		return nil, ErrSequenceEmpty
+	}
+	return &list.head.v, nil
+}
+
+// Sort randomly sorts the elements in place using Knuth shuffle algorithm
+// Ref.: https://en.wikipedia.org/wiki/Fisher–Yates_shuffle
+func (list *LinkedList[T]) Sort() {
+	n := list.size
+	nodes := make([]*Node[T], 0, n)
+	random := rand.New(rand.NewSource(time.Now().UTC().UnixNano()))
+	// Collect the nodes in a slice of pointers
+	for node := list.head; node != nil; node = node.next {
+		nodes = append(nodes, node)
+	}
+	// Knuth shuffle algorithm
+	for i := n - 1; i > 0; i -= 1 {
+		j := random.Intn(i + 1)
+		nodes[i].v, nodes[j].v = nodes[j].v, nodes[i].v
+	}
+}
+
+// Insert inserts an element to head
+func (list *LinkedList[T]) Insert(v T) {
 	node := NewNode[T](v)
-	if l.head == nil {
-		l.head = node
+	if list.head == nil {
+		list.head = node
 	} else {
-		node.next = l.head
-		l.head.prev = node
-		l.head = node
+		node.next = list.head
+		list.head.prev = node
+		list.head = node
 	}
-	l.size += 1
+	list.size += 1
 }
 
-// Peek peeks head
-func (l *LinkedList[T]) Peek() (*T, error) {
-	if l.head == nil {
-		return nil, ErrLinkedListEmpty
+// Delete deletes the element in the head
+func (list *LinkedList[T]) Delete() (*T, error) {
+	if list.head == nil {
+		return nil, ErrSequenceEmpty
 	}
-	return &l.head.v, nil
-}
-
-// Delete deletes the head
-func (l *LinkedList[T]) Delete() (*T, error) {
-	if l.head == nil {
-		return nil, ErrLinkedListEmpty
+	node := list.head
+	list.head = node.next
+	if list.head != nil {
+		list.head.prev = nil
 	}
-	node := l.head
-	l.head = node.next
-	if l.head != nil {
-		l.head.prev = nil
-	}
-	l.size -= 1
+	list.size -= 1
 	return &node.v, nil
 }
