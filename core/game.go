@@ -35,26 +35,27 @@ func NewGame(players []Player) *Game {
 }
 
 func initDrawDeck() *Deck {
-	i := 0
-	cards := make([]Card, 0, GameInitDrawDeckSize)
+
+	cards := make([]Card, GameInitDrawDeckSize)
+
 	suits := []CardSuit{Red, Green, Blue, Yellow}
 	ranks := []CardRank{Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Reverse, Skip, PlusTwo}
 	for _, suit := range suits {
 		for _, rank := range ranks {
 			for j := 0; j < 2; j += 1 {
-				cards[i] = *NewCard(suit, rank)
-				i += 1
+				cards = append(cards, NewCard(suit, rank))
 			}
 		}
 	}
+
 	suits = []CardSuit{Wild}
 	ranks = []CardRank{Any, PlusFour}
 	for _, rank := range ranks {
 		for j := 0; j < 4; j += 1 {
-			cards[i] = *NewCard(suits[0], rank)
-			i += 1
+			cards = append(cards, NewCard(suits[0], rank))
 		}
 	}
+
 	return NewDeck(
 		WithCards(cards),
 		WithShuffle(),

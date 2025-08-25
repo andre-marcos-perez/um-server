@@ -41,8 +41,8 @@ func (c Card) String() string {
 	return fmt.Sprintf("%v of %v", c.suit, c.rank)
 }
 
-func NewCard(suit CardSuit, rank CardRank) *Card {
-	return &Card{
+func NewCard(suit CardSuit, rank CardRank) Card {
+	return Card{
 		suit: suit,
 		rank: rank,
 	}
