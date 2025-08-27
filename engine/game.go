@@ -3,6 +3,7 @@ package engine
 import (
 	"errors"
 	"github.com/andre-marcos-perez/um-server/core"
+	"github.com/andre-marcos-perez/um-server/player"
 )
 
 const (
@@ -21,7 +22,7 @@ type Game struct {
 	DiscardDeck *core.Deck
 }
 
-func NewGame(players []core.Player) (*Game, error) {
+func NewGame(players []player.Player) (*Game, error) {
 
 	if len(players) < GameInitPlayerMinAmount || len(players) > GameInitPlayerMaxAmount {
 		return nil, ErrGamePlayerInvalidAmount

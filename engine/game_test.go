@@ -2,16 +2,16 @@ package engine
 
 import (
 	"errors"
-	"github.com/andre-marcos-perez/um-server/core"
+	"github.com/andre-marcos-perez/um-server/player"
 	"testing"
 )
 
 func TestGameNew(t *testing.T) {
 	t.Parallel()
 	t.Run("should create a new game", func(t *testing.T) {
-		players := []core.Player{
-			*core.NewPlayer(),
-			*core.NewPlayer(),
+		players := []player.Player{
+			*player.NewPlayer(),
+			*player.NewPlayer(),
 		}
 		game, err := NewGame(players)
 		if err != nil {
@@ -33,8 +33,8 @@ func TestGameNew(t *testing.T) {
 		}
 	})
 	t.Run("should fail to create a game with 1 player", func(t *testing.T) {
-		players := []core.Player{
-			*core.NewPlayer(),
+		players := []player.Player{
+			*player.NewPlayer(),
 		}
 		_, err := NewGame(players)
 		if err != nil {
@@ -45,18 +45,18 @@ func TestGameNew(t *testing.T) {
 		}
 	})
 	t.Run("should fail to create a game with 11 player", func(t *testing.T) {
-		players := []core.Player{
-			*core.NewPlayer(),
-			*core.NewPlayer(),
-			*core.NewPlayer(),
-			*core.NewPlayer(),
-			*core.NewPlayer(),
-			*core.NewPlayer(),
-			*core.NewPlayer(),
-			*core.NewPlayer(),
-			*core.NewPlayer(),
-			*core.NewPlayer(),
-			*core.NewPlayer(),
+		players := []player.Player{
+			*player.NewPlayer(),
+			*player.NewPlayer(),
+			*player.NewPlayer(),
+			*player.NewPlayer(),
+			*player.NewPlayer(),
+			*player.NewPlayer(),
+			*player.NewPlayer(),
+			*player.NewPlayer(),
+			*player.NewPlayer(),
+			*player.NewPlayer(),
+			*player.NewPlayer(),
 		}
 		_, err := NewGame(players)
 		if err != nil {
