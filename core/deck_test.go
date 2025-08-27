@@ -1,6 +1,7 @@
 package core
 
 import (
+	"encoding/json"
 	"errors"
 	"testing"
 )
@@ -82,6 +83,22 @@ func TestDeckPlace(t *testing.T) {
 		deck.Place(expected)
 		if card, _ := deck.Draw(); *card != expected {
 			t.Errorf("Expected deck cards to be %v, got %v", expected, card)
+		}
+	})
+}
+
+func TestDeckMarshalJSON(t *testing.T) {
+	cards := []Card{
+		NewCard(Red, Zero),
+		NewCard(Wild, PlusFour),
+	}
+	deck := NewDeck(
+		WithCards(cards),
+	)
+	t.Run("should marshal deck", func(t *testing.T) {
+		expected := "[{\"suit\":\"wild\",\"rank\":\"+4\"},{\"suit\":\"red\",\"rank\":\"0\"}]"
+		if got, _ := json.Marshal(deck); string(got) != expected {
+			t.Errorf("Expected deck to be %v, got %v", expected, got)
 		}
 	})
 }

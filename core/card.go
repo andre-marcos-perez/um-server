@@ -1,6 +1,9 @@
 package core
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 type CardSuit uint8
 
@@ -11,6 +14,8 @@ const (
 	Yellow
 	Wild
 )
+
+var cardSuits = [...]string{"red", "blue", "green", "yellow", "wild"}
 
 type CardRank uint8
 
@@ -32,13 +37,15 @@ const (
 	PlusFour
 )
 
+var cardRanks = [...]string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "reverse", "skip", "any", "+2", "+4"}
+
 type Card struct {
 	suit CardSuit
 	rank CardRank
 }
 
-func (c Card) String() string {
-	return fmt.Sprintf("%v of %v", c.suit, c.rank)
+func (card Card) String() string {
+	return fmt.Sprintf("(%v, %v)", cardSuits[card.suit], cardRanks[card.rank])
 }
 
 func NewCard(suit CardSuit, rank CardRank) Card {
@@ -46,4 +53,14 @@ func NewCard(suit CardSuit, rank CardRank) Card {
 		suit: suit,
 		rank: rank,
 	}
+}
+
+func (card Card) MarshalJSON() ([]byte, error) {
+	return json.Marshal(struct {
+		Suit string `json:"suit"`
+		Rank string `json:"rank"`
+	}{
+		Suit: cardSuits[card.suit],
+		Rank: cardRanks[card.rank],
+	})
 }

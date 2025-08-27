@@ -33,13 +33,13 @@ func NewGame(players []player.Player) (*Game, error) {
 		DiscardDeck: initDiscardDeck(),
 	}
 
-	for _, player := range players {
+	for _, p := range players {
 		for i := 0; i < GameInitPlayerDeckSize; i += 1 {
 			card, err := game.DrawDeck.Draw()
 			if err != nil {
 				panic(err)
 			}
-			player.Deck.Place(*card)
+			p.Deck.Place(*card)
 		}
 	}
 
