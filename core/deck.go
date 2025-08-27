@@ -1,6 +1,7 @@
 package core
 
 import (
+	"encoding/json"
 	"errors"
 	"github.com/andre-marcos-perez/um-server/sequence"
 )
@@ -51,4 +52,12 @@ func (deck *Deck) Draw() (*Card, error) {
 
 func (deck *Deck) Place(card Card) {
 	deck.cards.Insert(card)
+}
+
+func (deck *Deck) MarshalJSON() ([]byte, error) {
+	m, err := json.Marshal(deck.cards.Iter())
+	if err != nil {
+		return nil, err
+	}
+	return m, nil
 }

@@ -1,3 +1,3 @@
 # UM Server
 
-> UM card game server
+> UM card game authoritative server
