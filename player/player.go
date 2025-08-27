@@ -3,7 +3,7 @@ package player
 import "github.com/andre-marcos-perez/um-server/core"
 
 type Player struct {
-	Deck *core.Deck
+	Deck *core.Deck `json:"deck"`
 }
 
 func NewPlayer() *Player {

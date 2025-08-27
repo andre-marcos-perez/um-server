@@ -26,8 +26,8 @@ func TestGameNew(t *testing.T) {
 			t.Errorf("Draw deck len: got %d, want %d", got, expected)
 		}
 		expected = GameInitPlayerDeckSize
-		for _, player := range players {
-			if got := player.Deck.Len(); got != expected {
+		for _, p := range players {
+			if got := p.Deck.Len(); got != expected {
 				t.Errorf("Player deck len: got %d, want %d", got, expected)
 			}
 		}
